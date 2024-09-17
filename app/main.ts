@@ -1,5 +1,5 @@
 import * as net from "net";
-import { Lexer, Token } from "./BulkParser/Lexer"
+import { Lexer, Token, ITokenFactory, TokenFactory } from "./BulkParser/Lexer"
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -28,9 +28,9 @@ const server: net.Server = net.createServer((connection: net.Socket) => {
         const decoder = new TextDecoder()
         const string_data: string = decoder.decode(data)
 
-        const lexer = new Lexer(string_data);
-        const tokens = lexer.consume();
-        tokens.map((i: Token) => console.log("item >", i));
+        const factory = new TokenFactory();
+        const lexer = new Lexer(factory);
+        const tokens = lexer.consume(string_data);
 
         const array_data = splitBulkString(string_data)
         console.log(array_data)

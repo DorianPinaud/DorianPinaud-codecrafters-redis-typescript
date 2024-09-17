@@ -31,9 +31,15 @@ const tokensPatterns: TokenPattern[] = [
     { pattern: /^(\w+).*/, symbol: TokenType.String },
 ];
 
-class TokenFactory {
+export interface ITokenFactory {
+    createToken(text: string): Token
+}
 
-    static createToken(text: string): Token {
+export class TokenFactory implements ITokenFactory {
+
+    constructor() { }
+
+    createToken(text: string): Token {
         return tokensPatterns.reduce((ret: Token, item: TokenPattern): Token => {
             // if already found a match just skip the next symbol
             if (ret.type !== TokenType.InvalidParsingSymbol) {
@@ -60,17 +66,16 @@ class TokenFactory {
 }
 
 export class Lexer {
-    text: string;
+    factory: ITokenFactory;
 
-    constructor(text: string) {
-        this.text = text
+    constructor(factory: ITokenFactory) {
+        this.factory = factory
     }
 
-    consume(): Array<Token> {
-        let stream: string = this.text;
+    consume(stream: string): Array<Token> {
         let ret: Array<Token> = [];
         while (stream.length > 0) {
-            const token = TokenFactory.createToken(stream);
+            const token = this.factory.createToken(stream);
             ret.push(token);
             if (token.type == TokenType.InvalidParsingSymbol) {
                 return ret;
