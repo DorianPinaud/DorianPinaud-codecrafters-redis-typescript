@@ -1,4 +1,5 @@
 import * as net from "net";
+import { Lexer, Token } from "./BulkParser/Lexer"
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -22,8 +23,15 @@ function splitBulkString(str: string): string[] {
 const server: net.Server = net.createServer((connection: net.Socket) => {
     // Handle connection
     connection.on("data", (data: ArrayBuffer) => {
+
+
         const decoder = new TextDecoder()
-        const string_data = decoder.decode(data)
+        const string_data: string = decoder.decode(data)
+
+        const lexer = new Lexer(string_data);
+        const tokens = lexer.consume();
+        tokens.map((i: Token) => console.log("item >", i));
+
         const array_data = splitBulkString(string_data)
         console.log(array_data)
         if (array_data[0].toUpperCase() === "ECHO" && array_data.length === 2) {
