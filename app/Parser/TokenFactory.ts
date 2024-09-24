@@ -2,7 +2,12 @@ import { ITokenFactory } from "./ITokenFactory"
 import { Token } from "./Token";
 
 export enum BulkTokenType {
-    Element,
+    Echo,
+    Argument,
+    Ping,
+    Set,
+    Get,
+    Px,
     Array,
 };
 
@@ -13,7 +18,12 @@ type TokenPattern = {
 
 const tokensPatterns: TokenPattern[] = [
     { pattern: /^(\*(\d+)\r\n).*/, symbol: BulkTokenType.Array },
-    { pattern: /^(\$\d+\r\n(.*)\r\n).*/, symbol: BulkTokenType.Element },
+    { pattern: /^(\$\d+\r\n(Echo)\r\n).*/i, symbol: BulkTokenType.Echo },
+    { pattern: /^(\$\d+\r\n(Ping)\r\n).*/i, symbol: BulkTokenType.Ping },
+    { pattern: /^(\$\d+\r\n(Get)\r\n).*/i, symbol: BulkTokenType.Get },
+    { pattern: /^(\$\d+\r\n(Set)\r\n).*/i, symbol: BulkTokenType.Set },
+    { pattern: /^(\$\d+\r\n(Px)\r\n).*/i, symbol: BulkTokenType.Px },
+    { pattern: /^(\$\d+\r\n(\w+)\r\n).*/i, symbol: BulkTokenType.Argument },
 ];
 
 export class BulkTokenFactory implements ITokenFactory {
