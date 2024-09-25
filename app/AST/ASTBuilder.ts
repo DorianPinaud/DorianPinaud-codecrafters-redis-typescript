@@ -1,4 +1,4 @@
-import { CommandEchoNode, CommandGetNode, CommandPingNode, CommandPxNode, CommandSetNode, CompositeNode, IASTNode, } from "./AST"
+import { CommandEchoNode, CommandGetNode, CommandPingNode, CommandPxNode, CommandSetNode, CompositeNode, CommandConfigGetNode, IASTNode, } from "./AST"
 
 type RootNode = IASTNode | CompositeNode | null;
 
@@ -32,8 +32,13 @@ export class ASTBuilder {
         return this;
     }
 
-    createPingCommand() {
+    createPingCommand(): ASTBuilder {
         this.rootNode = new CommandPingNode();
+        return this;
+    }
+
+    createConfigGetCommand(arg: string): ASTBuilder {
+        this.rootNode = new CommandConfigGetNode(arg);
         return this;
     }
 

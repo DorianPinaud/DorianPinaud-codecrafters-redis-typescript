@@ -34,6 +34,19 @@ export class CommandPingNode implements IASTNode {
 
 }
 
+export class CommandConfigGetNode implements IASTNode {
+
+    arg: string
+
+    constructor(arg: string) {
+        this.arg = arg
+    }
+
+    process(visitor: IASTVisitor): void {
+        visitor.visitConfigGetNode(this);
+    }
+}
+
 export class CommandEchoNode implements IASTNode {
 
     arg: string

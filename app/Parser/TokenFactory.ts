@@ -3,6 +3,7 @@ import { Token } from "./Token";
 
 export enum BulkTokenType {
     Echo,
+    ConfigGet,
     Argument,
     Ping,
     Set,
@@ -19,6 +20,7 @@ type TokenPattern = {
 const tokensPatterns: TokenPattern[] = [
     { pattern: /^(\*(\d+)\r\n).*/, symbol: BulkTokenType.Array },
     { pattern: /^(\$\d+\r\n(Echo)\r\n).*/i, symbol: BulkTokenType.Echo },
+    { pattern: /^(\$\d+\r\n(Config\r\n\$\d+\r\nGet)\r\n).*/i, symbol: BulkTokenType.ConfigGet },
     { pattern: /^(\$\d+\r\n(Ping)\r\n).*/i, symbol: BulkTokenType.Ping },
     { pattern: /^(\$\d+\r\n(Get)\r\n).*/i, symbol: BulkTokenType.Get },
     { pattern: /^(\$\d+\r\n(Set)\r\n).*/i, symbol: BulkTokenType.Set },
